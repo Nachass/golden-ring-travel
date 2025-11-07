@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ панель - Золотое кольцо</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" onclick="location.href='index.html'">
+                    🏛️ Админ панель
+                </div>
+                <div class="header-controls">
+                    <button class="header-btn" onclick="adminPanel.toggleTheme()" id="themeToggleBtn">
+                        🌙 Тёмная
+                    </button>
+                    <button class="header-btn" onclick="location.href='index.html'">На сайт</button>
+                    <button class="header-btn logout-btn" onclick="adminPanel.logout()">Выйти</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1 class="page-title">Управление турами</h1>
+            
+            <div class="admin-panel">
+                <div class="admin-section">
+                    <h2>Добавить новый тур</h2>
+                    <form id="addTourForm" class="tour-form">
+                        <select id="tourCity" required>
+                            <option value="">Выберите город</option>
+                            <option value="1">Сергиев Посад</option>
+                            <option value="2">Переславль-Залесский</option>
+                            <option value="3">Ростов Великий</option>
+                            <option value="4">Ярославль</option>
+                            <option value="5">Кострома</option>
+                            <option value="6">Иваново</option>
+                            <option value="7">Суздаль</option>
+                            <option value="8">Владимир</option>
+                        </select>
+                        
+                        <input type="text" id="tourTitle" placeholder="Название тура" required>
+                        <textarea id="tourDescription" placeholder="Краткое описание" required></textarea>
+                        <textarea id="tourFullDescription" placeholder="Полное описание" required></textarea>
+                        
+                        <div class="form-row">
+                            <input type="number" id="tourPrice" placeholder="Цена" required>
+                            <input type="number" id="tourDuration" placeholder="Длительность (дней)" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <input type="number" id="tourSeats" placeholder="Количество мест" value="20" required>
+                            <input type="text" id="tourImage" placeholder="URL изображения">
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Добавить тур</button>
+                    </form>
+                </div>
+
+                <div class="admin-section">
+                    <h2>Существующие туры</h2>
+                    <div class="tours-container">
+                        <div id="existingTours" class="tours-list">
+                            <div class="loading">Загрузка туров...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Попап редактирования тура -->
+    <div id="editTourPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="adminPanel.closeEditPopup()">&times;</span>
+            <h3>Редактировать тур</h3>
+            <form id="editTourForm" class="tour-form">
+                <input type="hidden" id="editTourId">
+                <select id="editTourCity" required>
+                    <option value="">Выберите город</option>
+                    <option value="1">Сергиев Посад</option>
+                    <option value="2">Переславль-Залесский</option>
+                    <option value="3">Ростов Великий</option>
+                    <option value="4">Ярославль</option>
+                    <option value="5">Кострома</option>
+                    <option value="6">Иваново</option>
+                    <option value="7">Суздаль</option>
+                    <option value="8">Владимир</option>
+                </select>
+                
+                <input type="text" id="editTourTitle" placeholder="Название тура" required>
+                <textarea id="editTourDescription" placeholder="Краткое описание" required></textarea>
+                <textarea id="editTourFullDescription" placeholder="Полное описание" required></textarea>
+                
+                <div class="form-row">
+                    <input type="number" id="editTourPrice" placeholder="Цена" required>
+                    <input type="number" id="editTourDuration" placeholder="Длительность (дней)" required>
+                </div>
+                
+                <div class="form-row">
+                    <input type="number" id="editTourSeats" placeholder="Количество мест" required>
+                    <input type="text" id="editTourImage" placeholder="URL изображения">
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn">Сохранить изменения</button>
+                    <button type="button" class="header-btn" onclick="adminPanel.closeEditPopup()">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

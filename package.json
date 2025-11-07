@@ -1,0 +1,17 @@
+{
+  "name": "golden-ring-travel",
+  "version": "1.0.0",
+  "description": "Турагентство по Золотому кольцу России",
+  "main": "back/index.js",
+  "scripts": {
+    "start": "node back/index.js",
+    "dev": "node back/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.6.0",
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "cors": "^2.8.5"
+  }
+}

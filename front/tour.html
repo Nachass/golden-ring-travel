@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали тура - Золотое кольцо</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" onclick="location.href='index.html'">
+                    🏛️ Золотое Кольцо
+                </div>
+                <div class="header-controls">
+                    <div class="settings">
+                        <button id="settingsBtn">⚙️</button>
+                        <div class="settings-dropdown" id="settingsDropdown">
+                            <button id="themeToggle">Светлая тема</button>
+                            <button id="adminLoginBtn">Админ вход</button>
+                        </div>
+                    </div>
+                    <div class="profile-section">
+                        <button id="profileBtn" class="profile-btn">Войти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div id="tourDetails">
+                <div class="loading">Загрузка информации о туре...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Попап оформления заказа -->
+    <div id="bookingPopup" class="popup scrollable-popup">
+        <div class="popup-content booking-popup-content">
+            <span class="close" onclick="tourApp.closeBookingPopup()">&times;</span>
+            <h3 class="booking-title">Оформление заказа</h3>
+            
+            <div class="booking-steps">
+                <div class="step active" data-step="1">1. Информация</div>
+                <div class="step" data-step="2">2. Оплата</div>
+                <div class="step" data-step="3">3. Подтверждение</div>
+            </div>
+            
+            <div id="bookingForm" class="booking-form">
+                <!-- Шаг 1: Информация о заказе -->
+                <div class="booking-step active" id="step1">
+                    <div class="booking-summary">
+                        <div class="tour-image-mini">
+                            <img id="bookingTourImage" src="" alt="" class="tour-image">
+                        </div>
+                        <div class="tour-info">
+                            <h4 id="bookingTourTitle" class="tour-title"></h4>
+                            <div class="tour-meta-small">
+                                <span id="bookingTourCity" class="tour-city"></span>
+                                <span id="bookingTourDuration" class="tour-duration"></span>
+                            </div>
+                            <div class="price-section">
+                                <div class="price-per-ticket">
+                                    <span id="bookingTourPrice" class="tour-price"></span> за билет
+                                </div>
+                                <div class="seats-available">
+                                    <span id="bookingTourSeats" class="tour-seats"></span> мест доступно
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ticket-selection">
+                        <div class="form-group">
+                            <label class="form-label">Количество билетов:</label>
+                            <div class="ticket-counter">
+                                <button type="button" class="counter-btn decrease-btn" data-action="decrease">-</button>
+                                <input type="number" id="ticketCount" class="ticket-input" min="1" max="10" value="1" readonly>
+                                <button type="button" class="counter-btn increase-btn" data-action="increase">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span class="price-label">Стоимость билетов:</span>
+                                <span id="ticketsSubtotal" class="price-value">0 ₽</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Сбор за обслуживание:</span>
+                                <span id="serviceFee" class="price-value">0 ₽</span>
+                            </div>
+                            <div class="price-row total">
+                                <span class="price-label">Итого к оплате:</span>
+                                <span id="totalPrice" class="price-value">0 ₽</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email для получения билетов:</label>
+                        <input type="email" id="customerEmail" class="form-input email-input" placeholder="your@email.com" required>
+                        <small class="form-hint">На этот email будут отправлены электронные билеты</small>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="button" class="next-btn step1-next" data-next="2">Продолжить</button>
+                    </div>
+                </div>
+                
+                <!-- Шаг 2: Оплата -->
+                <div class="booking-step" id="step2">
+                    <div class="payment-methods">
+                        <div class="payment-method active" data-method="card">
+                            <input type="radio" name="paymentMethod" id="paymentCard" class="payment-radio" value="card" checked>
+                            <label for="paymentCard" class="payment-label">💳 Банковская карта</label>
+                        </div>
+                        <div class="payment-method" data-method="sbp">
+                            <input type="radio" name="paymentMethod" id="paymentSBP" class="payment-radio" value="sbp">
+                            <label for="paymentSBP" class="payment-label">📱 СБП</label>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-details card-details active" id="cardDetails">
+                        <div class="form-group">
+                            <label class="form-label">Номер карты:</label>
+                            <input type="text" id="cardNumber" class="form-input card-input" placeholder="1234 5678 9012 3456" pattern="[0-9\s]{13,19}" required>
+                            <div class="card-icons">
+                                <span class="card-icon">💳</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Срок действия:</label>
+                                <input type="text" id="cardExpiry" class="form-input expiry-input" placeholder="ММ/ГГ" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CVV:</label>
+                                <input type="password" id="cardCVV" class="form-input cvv-input" placeholder="123" pattern="[0-9]{3}" required>
+                                <div class="cvv-hint" title="3 цифры на обратной стороне карты">?</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Имя владельца карты:</label>
+                            <input type="text" id="cardHolder" class="form-input holder-input" placeholder="IVAN IVANOV" required>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-details sbp-details" id="sbpDetails">
+                        <div class="sbp-info">
+                            <p class="sbp-description">После подтверждения заказа вы будете перенаправлены на страницу оплаты через СБП</p>
+                            <div class="sbp-qr-placeholder">
+                                <div class="qr-code">QR-код появится после подтверждения</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="security-notice">
+                        <div class="secure-badge">🔒 Безопасная оплата</div>
+                        <p class="security-text">Все данные защищены SSL-шифрованием</p>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="button" class="back-btn step2-back" data-back="1">Назад</button>
+                        <button type="button" class="next-btn step2-next" data-next="3">Продолжить</button>
+                    </div>
+                </div>
+                
+                <!-- Шаг 3: Подтверждение -->
+                <div class="booking-step" id="step3">
+                    <div class="confirmation-content">
+                        <div class="confirmation-header">
+                            <div class="confirmation-icon">✅</div>
+                            <h3 class="confirmation-title">Подтверждение заказа</h3>
+                        </div>
+                        
+                        <div class="booking-summary-confirm">
+                            <h4 class="summary-title">Детали заказа:</h4>
+                            <div class="summary-item">
+                                <span class="summary-label">Тур:</span>
+                                <span id="confirmTourTitle" class="summary-value"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Количество билетов:</span>
+                                <span id="confirmTicketCount" class="summary-value"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Email для билетов:</span>
+                                <span id="confirmEmail" class="summary-value"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Способ оплаты:</span>
+                                <span id="confirmPaymentMethod" class="summary-value"></span>
+                            </div>
+                            <div class="summary-item total">
+                                <span class="summary-label">Итого к оплате:</span>
+                                <span id="confirmTotalPrice" class="summary-value"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="security-notice">
+                            <div class="secure-badge">🔒 Безопасная оплата</div>
+                            <p class="security-text">Нажимая "Подтвердить заказ", вы соглашаетесь с условиями бронирования</p>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="button" class="back-btn step3-back" data-back="2">Назад</button>
+                            <button type="button" class="submit-btn final-submit-btn" id="finalSubmitBtn">Подтвердить заказ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Попап успешного оформления -->
+    <div id="successPopup" class="popup">
+        <div class="popup-content success-popup-content">
+            <span class="close" onclick="tourApp.closeSuccessPopup()">&times;</span>
+            <div class="success-content">
+                <div class="success-icon">✅</div>
+                <h3 class="success-title">Заказ оформлен!</h3>
+                <div id="successMessage" class="success-message"></div>
+                <button onclick="tourApp.closeSuccessPopup()" class="success-ok-btn">
+                    Понятно
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/tour.js"></script>
+</body>
+</html>

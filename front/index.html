@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Золотое кольцо России</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" onclick="location.reload()">
+                    🏛️ Золотое Кольцо
+                </div>
+                <div class="header-controls">
+                    <div class="settings">
+                        <button id="settingsBtn">⚙️</button>
+                        <div class="settings-dropdown" id="settingsDropdown">
+                            <button id="themeToggle">Светлая тема</button>
+                            <button id="adminLoginBtn">Админ вход</button>
+                        </div>
+                    </div>
+                    <div class="profile-section">
+                        <button id="profileBtn" class="profile-btn">Войти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1 class="main-title">Золотое кольцо России</h1>
+            <div class="cities-list" id="citiesList">
+                <div class="loading">Загрузка городов...</div>
+            </div>
+        </div>
+    </main>
+
+    <div id="authPopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">ВХОД</button>
+                <button class="tab-btn" data-tab="register">РЕГИСТР</button>
+            </div>
+            
+            <form id="loginForm" class="auth-form active">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+                <a href="#" class="forgot-password">Забыли пароль?</a>
+            </form>
+            
+            <form id="registerForm" class="auth-form">
+                <input type="text" name="full_name" placeholder="ФИО" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="tel" name="phone" placeholder="Телефон" required>
+                <input type="text" name="passport" placeholder="Номер и серия паспорта" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="profilePopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h3>Профиль пользователя</h3>
+            
+            <div id="profileView">
+                <div class="profile-info">
+                    <p><strong>ФИО:</strong> <span id="userName"></span></p>
+                    <p><strong>Email:</strong> <span id="userEmail"></span></p>
+                    <p><strong>Телефон:</strong> <span id="userPhone"></span></p>
+                    <p><strong>Паспорт:</strong> <span id="userPassport"></span></p>
+                </div>
+                <button id="editProfileBtn">Редактировать профиль</button>
+                <button id="changePasswordBtn">Сменить пароль</button>
+                <button id="logoutBtn" class="logout-btn">Выйти</button>
+            </div>
+
+            <div id="profileEdit" style="display: none;">
+                <form id="editProfileForm">
+                    <input type="text" id="editFullName" placeholder="ФИО" required>
+                    <input type="email" id="editEmail" placeholder="Email" required>
+                    <input type="tel" id="editPhone" placeholder="Телефон" required>
+                    <input type="text" id="editPassport" placeholder="Паспортные данные" required>
+                    <div class="form-buttons">
+                        <button type="submit">Сохранить</button>
+                        <button type="button" id="cancelEditBtn">Отмена</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="changePasswordForm" style="display: none;">
+                <form id="passwordForm">
+                    <input type="password" id="currentPassword" placeholder="Текущий пароль" required>
+                    <input type="password" id="newPassword" placeholder="Новый пароль" required>
+                    <input type="password" id="confirmPassword" placeholder="Повторите новый пароль" required>
+                    <div class="form-buttons">
+                        <button type="submit">Сменить пароль</button>
+                        <button type="button" id="cancelPasswordBtn">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsPopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h3>Настройки</h3>
+            <div class="settings-options">
+                <label>
+                    <input type="checkbox" id="themeCheckbox"> Темная тема
+                </label>
+                <button id="adminAccessBtn">Административный доступ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminLoginPopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h3>Вход для администратора</h3>
+            <form id="adminLoginForm">
+                <input type="text" name="username" placeholder="Логин" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Попап восстановления пароля -->
+    <div id="forgotPasswordPopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h3>Восстановление пароля</h3>
+            <p style="margin-bottom: 1rem; opacity: 0.8;">Введите email или телефон, и мы вышлем вам новый пароль</p>
+            <form id="forgotPasswordForm">
+                <input type="text" id="resetContact" placeholder="Email или телефон" required>
+                <button type="submit" style="width: 100%; margin-top: 1rem;">Восстановить пароль</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Попап создания нового пароля -->
+    <div id="newPasswordPopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h3>Создание нового пароля</h3>
+            <p style="margin-bottom: 1rem; opacity: 0.8;">Введите новый пароль для вашего аккаунта</p>
+            <form id="newPasswordForm">
+                <input type="password" id="newPasswordInput" placeholder="Новый пароль" required>
+                <input type="password" id="confirmPasswordInput" placeholder="Повторите пароль" required style="margin-top: 0.5rem;">
+                <div class="form-buttons" style="margin-top: 1rem;">
+                    <button type="submit">Сохранить пароль</button>
+                    <button type="button" onclick="travelApp.closeNewPasswordPopup()">Отмена</button>
+                </div>
+            </form>
+        </div>
+</div>
+    
+    <!-- Попап успешного оформления заказа -->
+    <div id="successPopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <div style="text-align: center; padding: 1rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                <h3 style="color: var(--success-color); margin-bottom: 1rem;">Заказ оформлен!</h3>
+                <div id="successMessage" style="margin-bottom: 1.5rem; line-height: 1.5;"></div>
+                <button onclick="travelApp.closeSuccessPopup()" 
+                        style="background: var(--primary-color); color: var(--bg-color); border: none; padding: 0.75rem 2rem; border-radius: 8px; cursor: pointer;">
+                    Понятно
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+</body>
+</html>
